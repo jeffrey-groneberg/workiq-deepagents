@@ -1,0 +1,90 @@
+# Environment variables and local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+secrets/
+
+# Python environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+
+# Coverage, test, and profiling output
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+prof/
+*.prof
+*.py,cover
+junit.xml
+
+# Packaging output
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# Local lock generated through the approved package proxy
+uv.lock
+
+# Node.js artifacts used by the WorkIQ subprocess
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# Local tool and cloud credentials
+.direnv/
+.envrc
+.azure/
+.aws/
+.kube/
+.netrc
+.npmrc
+.pypirc
+pip.conf
+credentials.json
+service-account*.json
+
+# Operating-system files
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Local logs and temporary files
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/

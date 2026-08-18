@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "workiq-deepagent"
+version = "0.1.0"
+description = "A Python Deep Agents CLI backed by the Microsoft WorkIQ MCP server"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "azure-identity>=1.25.0",
+    "deepagents>=0.3.0",
+    "langchain-mcp-adapters>=0.2.1",
+    "langchain-openai>=0.3.0",
+    "pydantic-settings>=2.10.0",
+    "rich>=14.0.0",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+workiq-agent = "workiq_deepagent.cli:app"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.400",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.12.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/workiq_deepagent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[[tool.uv.index]]
+name = "microsoft"
+url = "https://packagefeedproxy.microsoft.io/pypi/simple"
+default = true
