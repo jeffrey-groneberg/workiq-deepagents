@@ -14,8 +14,8 @@ natural-language questions. Query complexity does not distinguish them.
 | Granular entity operations | Yes | No public primitive | No |
 | Caller-controlled writes | Yes, policy gated | Agent-dependent | No |
 | Work identity | Caller-defined | `task.id` | No task object |
-| Conversation state | Outer graph, optional WorkIQ `conversationId` | `contextId` | `conversationId` |
-| Recovery owner | Caller | WorkIQ task contract | Caller resubmits or continues |
+| Conversation state | Host transcript, optional WorkIQ `conversationId` | `contextId` | `conversationId` |
+| Recovery owner | Caller | A2A task lifecycle | Caller resubmits or continues |
 
 ## Control planes
 
@@ -48,15 +48,20 @@ natural-language questions. Query complexity does not distinguish them.
 
 | Identifier | Keep with |
 | --- | --- |
-| Deep Agent checkpoint | Application thread |
+| Outer-agent checkpoint | Application thread |
 | MCP `ask` `conversationId` | Tenant + user + outer thread |
 | A2A `contextId` | Tenant + user + workflow |
 | A2A `task.id` | Tenant + user + delegated operation |
 | REST `conversationId` | Tenant + user + chat |
 
 These are application storage boundaries, not service retention guarantees. Transport sessions are
-not conversation state, and identifiers are not credentials. Persist every identifier within the
-delegated user's identity boundary.
+not conversation state, and identifiers are not credentials. Use tenant ID, user identity, and the
+owning application thread, workflow, or chat as the storage key; never look up state by an identifier
+alone.
 
-MCP has one additional trap: the outer graph and WorkIQ `ask` can each maintain context. Reusing an
-inner `conversationId` introduces state that may not be visible in the outer transcript.
+An outer-agent checkpoint is application-owned transcript and workflow state. A2A's task lifecycle
+is the service-visible `task.id`, status, artifacts, cancellation, and subscription contract.
+
+MCP has one additional trap: the host transcript and WorkIQ `ask` can each maintain context. Reusing
+an inner `conversationId` can influence a response through state that is absent from the host
+transcript, so scope it to the same tenant, user, and outer thread.

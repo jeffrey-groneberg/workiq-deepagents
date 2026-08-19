@@ -458,6 +458,11 @@ body {
   box-shadow: 0 8px 22px rgba(13, 21, 19, 0.08);
 }
 
+.md-typeset .admonition :is(p, li),
+.md-typeset details :is(p, li) {
+  max-width: none;
+}
+
 .md-typeset code,
 .md-typeset pre {
   letter-spacing: 0;

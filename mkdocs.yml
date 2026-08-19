@@ -76,7 +76,7 @@ nav:
   - Overview: index.md
   - Foundations: foundations.md
   - Protocols:
-      - MCP - Own the loop: protocols/mcp.md
+      - MCP - Invoke WorkIQ as tools: protocols/mcp.md
       - A2A - Delegate a task: protocols/a2a.md
       - REST - Delegate a turn: protocols/rest.md
   - MCP + Deep Agents: mcp-deepagents.md

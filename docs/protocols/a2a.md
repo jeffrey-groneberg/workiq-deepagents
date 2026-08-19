@@ -29,8 +29,12 @@ Agent Card rather than hard-coding agent capabilities.
 | --- | --- |
 | Message | User or agent communication |
 | Task | Stateful delegated work with an ID and lifecycle |
-| Artifact | Public task output |
+| Artifact | Agent-produced output attached to a task; not a raw Microsoft 365 resource primitive |
 | `contextId` | Grouping for related messages and tasks |
+
+WorkIQ returns both identifiers. `task.id` names one unit of delegated work; `contextId` groups a
+conversation that can contain multiple messages or tasks. Persist both, and pass the returned
+`contextId` in a later message when it should continue the same context.
 
 These objects expose collaboration state, not WorkIQ's internal retrieval plan or private
 reasoning.
@@ -44,8 +48,9 @@ reasoning.
 | `CancelTask` | Request cancellation |
 | `SubscribeToTask` | Observe subsequent task updates |
 
-Persist `task.id` and `contextId` by tenant and user. Recovery means reading a task while WorkIQ
-retains it; the published contract does not promise archival retention.
+Persist `task.id` and `contextId` as soon as WorkIQ returns them, scoped by tenant, user, and
+workflow. Recovery requires the saved `task.id` and means reading the task while WorkIQ retains it;
+the published contract does not promise archival retention or a later discovery fallback.
 
 ## Authentication
 
@@ -76,4 +81,5 @@ task operation still require authorization; task and context IDs are not capabil
 - artifacts rather than raw Microsoft 365 resources;
 - a multi-agent system that discovers peers through Agent Cards.
 
-Use REST for plain conversation. Use MCP when the caller must choose operations or perform writes.
+Use REST for a direct application-facing conversation contract. Use MCP when an MCP host should
+invoke WorkIQ as a tool, whether through `ask`, granular operations, or policy-gated writes.

@@ -2,8 +2,9 @@
 
 # Three protocols. Three control boundaries.
 
-WorkIQ exposes **MCP**, **A2A**, and **REST**. They reach similar Microsoft 365 context, but
-they assign orchestration, state, and recovery to different owners.
+WorkIQ is Microsoft's workplace intelligence layer for permission-aware reasoning over Microsoft
+365 data. It exposes **MCP**, **A2A**, and **REST**. They reach similar context, but assign
+orchestration, state, and recovery to different owners.
 
 [Choose a protocol](#choose-by-ownership){ .md-button .md-button--primary }
 [Control model](foundations.md){ .md-button }
@@ -35,7 +36,7 @@ they assign orchestration, state, and recovery to different owners.
 <div class="protocol-ledger">
   <a class="protocol-row protocol-row--mcp" href="protocols/mcp/">
     <span class="protocol-code">MCP</span>
-    <span><strong>You own the loop.</strong> Let an LLM-based client call WorkIQ <code>ask</code> for a synthesized answer or compose entity, schema, and action tools.</span>
+    <span><strong>You invoke tools.</strong> Let an MCP host call WorkIQ <code>ask</code> for a synthesized answer or compose entity, schema, and action tools.</span>
     <span class="protocol-action">Inspect MCP</span>
   </a>
   <a class="protocol-row protocol-row--a2a" href="protocols/a2a/">

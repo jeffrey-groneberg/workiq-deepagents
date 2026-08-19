@@ -39,7 +39,7 @@ or continue the WorkIQ conversation.
 
 ## Ownership
 
-The application owns:
+The MCP host owns:
 
 - which tools are available and when they are invoked;
 - the outer model and prompt, when an outer model is used;
@@ -52,8 +52,9 @@ WorkIQ also owns Microsoft 365 grounding and synthesis inside that tool call.
 ## State
 
 MCP does not define the host's agent conversation. If the host uses an outer agent, that agent owns
-its transcript and checkpoints. WorkIQ `ask` separately returns a `conversationId`; persist it only
-when intentional WorkIQ-side continuation is required.
+its transcript and checkpoints. WorkIQ `ask` separately returns a `conversationId`. Discard it for
+a one-shot call; persist it with the tenant, user, and host thread only when a later `ask` should
+continue that same WorkIQ conversation.
 
 This repository starts `@microsoft/workiq mcp` over stdio. Its default policy exposes `ask`,
 `call_function`, `fetch`, `get_schema`, `list_agents`, and `search_paths`; `--allow-writes` keeps
@@ -66,8 +67,10 @@ Python process receives MCP messages, not the bearer token. Remote MCP uses OAut
 discovery and a resource-bound delegated token.
 
 Authorization is cumulative: delegated grant, user ACLs, tenant policy, path/method policy, and
-workload controls must all allow the operation. Keep mutations disabled by default and require an
-application approval step before exposing them to the model.
+workload controls must all allow the operation. Keep mutation tools unavailable by default.
+Enabling them is not approval: an application-controlled interrupt must show the exact operation
+and arguments, then require fresh user confirmation immediately before invocation. Model-generated
+text cannot satisfy that gate.
 
 [Delegated authentication details](../authentication.md)
 

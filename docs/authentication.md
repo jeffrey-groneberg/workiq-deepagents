@@ -32,6 +32,10 @@ sensitivity labels, information barriers, and workload policy still apply.
 | Local A2A or REST | Public client + authorization code with PKCE | Caller |
 | Hosted A2A or REST | Confidential backend + OBO | Backend |
 
+Proof Key for Code Exchange (PKCE) protects the authorization-code flow for clients that cannot
+hold a secret. OAuth On-Behalf-Of (OBO) lets a hosted backend exchange the signed-in user's token for
+a delegated WorkIQ token without changing the represented user.
+
 ### Public client
 
 Use authorization code with PKCE through the system browser or broker. A CLI is a public client and
@@ -55,7 +59,8 @@ metadata instead of hard-coding an OAuth server or assuming consent authorizes e
 
 ## Security invariants
 
-- Scope conversation, context, and task IDs by tenant and user.
+- Scope conversation, context, and task IDs by tenant, user, and their owning chat, thread, or
+    workflow.
 - Treat IDs as routing state, never authorization.
 - Keep tokens, tool payloads, grounded text, and unrestricted reference URLs out of logs.
 - Require a fresh authorized call whenever state is reused.

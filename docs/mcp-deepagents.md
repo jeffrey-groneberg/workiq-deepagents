@@ -13,8 +13,11 @@ interactive sign-in and communicates with Python through MCP messages over stdio
 
 ## Run the example
 
-Complete the repository [setup](https://github.com/jeffrey-groneberg/workiq-deepagents#setup), then
-run the included read-only example:
+Prerequisites are Python 3.11+, Node.js with `npx`, `uv`, Azure CLI, and a WorkIQ-enabled Microsoft
+365 tenant. The repository [setup](https://github.com/jeffrey-groneberg/workiq-deepagents#setup)
+accepts the WorkIQ EULA and configures `WORKIQ_AGENT_MODEL_BASE_URL` and
+`WORKIQ_AGENT_MODEL_TENANT_ID`. Review the [delegated authentication boundary](authentication.md),
+then run the included read-only example:
 
 ```bash
 uv run python examples/mcp_deepagents.py \
@@ -68,7 +71,10 @@ reuse, prerequisite diagnostics, and explicit write enablement. For durable depl
 `InMemorySaver` with a persistent checkpointer and key every thread by tenant and user.
 
 Keep write tools disabled by default. Enabling them requires both WorkIQ tenant/path policy and an
-application approval step immediately before mutation.
+application-controlled approval step immediately before mutation. `--allow-writes` exposes the
+discovered write tools and changes the system prompt; it does not implement that trusted approval
+gate. A production host must interrupt tool execution, display the exact operation and arguments,
+and require fresh user confirmation before sending the call.
 
 Sources: [Deep Agents customization](https://docs.langchain.com/oss/python/deepagents/customization),
 [LangChain MCP adapters](https://github.com/langchain-ai/langchain-mcp-adapters), and the
