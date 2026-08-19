@@ -458,8 +458,10 @@ body {
   box-shadow: 0 8px 22px rgba(13, 21, 19, 0.08);
 }
 
-.md-typeset .admonition :is(p, li),
-.md-typeset details :is(p, li) {
+.md-typeset .admonition p,
+.md-typeset .admonition li,
+.md-typeset details p,
+.md-typeset details li {
   max-width: none;
 }
 
