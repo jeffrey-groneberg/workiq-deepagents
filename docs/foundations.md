@@ -1,15 +1,16 @@
 # Control and state
 
-MCP, A2A, and REST expose different ownership models, not interchangeable wrappers around one
-WorkIQ API.
+MCP, A2A, and REST expose different integration contracts with overlapping ability to answer
+natural-language questions. Query complexity does not distinguish them.
 
 ## Architecture matrix
 
 | Concern | MCP | A2A | REST |
 | --- | --- | --- | --- |
 | Public abstraction | Tool | Task | Conversation turn |
-| Orchestration owner | Caller | WorkIQ agent | WorkIQ |
-| Execution model selected by caller | Yes | No | No |
+| Recommended caller | LLM-based client | Another agent | Application or backend |
+| Natural-language answer | `ask` response | Task artifact | Chat response |
+| Orchestration owner | MCP host; WorkIQ inside `ask` | WorkIQ agent | WorkIQ |
 | Granular entity operations | Yes | No public primitive | No |
 | Caller-controlled writes | Yes, policy gated | Agent-dependent | No |
 | Work identity | Caller-defined | `task.id` | No task object |
@@ -21,10 +22,11 @@ WorkIQ API.
 === "MCP"
 
     <figure class="workiq-diagram workiq-diagram--raster">
-    <img src="../assets/images/mcp-control-plane.png" width="2482" height="1740" alt="The application sends a prompt and approved tools to the caller model. The model returns a tool call. The application calls WorkIQ MCP, receives a tool result, and continues the model loop.">
+    <img src="../assets/images/mcp-control-plane.png" width="2482" height="1740" alt="The MCP host can optionally use an outer model to select a tool, then calls WorkIQ MCP. WorkIQ returns either a synthesized answer from ask or an operation result; continuing an outer model loop is optional.">
     </figure>
 
-    The application owns planning, policy, retries, and final synthesis.
+    The MCP host owns policy, invocation, retries, and result handling. WorkIQ owns Microsoft 365
+    grounding and synthesis inside an `ask` call; an outer model is optional.
 
 === "A2A"
 

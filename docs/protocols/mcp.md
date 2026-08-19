@@ -1,13 +1,15 @@
-# MCP - Own the loop
+# MCP - Invoke WorkIQ as tools
 
-Use MCP when the application must control the model, tool policy, orchestration, and final answer.
+Use MCP when an LLM-based client should invoke WorkIQ as tools. Call `ask` with a natural-language
+question for a synthesized Microsoft 365 Copilot response, or use entity, schema, and action tools
+inside caller-owned orchestration.
 
 <div class="fold-board">
   <div class="fold-track fold-track--header" aria-hidden="true">
     <span></span><span>Intent</span><span>Control</span><span>State</span><span>Output</span><span>Recovery</span>
   </div>
   <div class="fold-track fold-track--mcp">
-    <strong>MCP</strong><span>Operation</span><span>Your app</span><span>Outer graph</span><span>Tool result</span><span>Your app</span>
+    <strong>MCP</strong><span>Ask / operation</span><span>MCP host</span><span>Host + optional WorkIQ chat</span><span>Answer / result</span><span>MCP host</span>
   </div>
 </div>
 
@@ -23,30 +25,35 @@ Treat runtime `tools/list` as authoritative. The tool is the verb and the relati
 path is the object:
 
 ```text
+ask "Brief me for my next customer call"
 fetch /me/messages
 create_entity /me/events
 do_action /me/sendMail
 call_function /search/query
 ```
 
-The outer model consumes each tool result and decides whether to call another tool or answer.
+The MCP host decides whether and when to call a tool, then consumes its result. `ask` is not a raw
+retrieval primitive: it invokes Microsoft 365 Copilot and returns a synthesized `response` plus a
+`conversationId`. The host can render that response directly, incorporate it into an outer model,
+or continue the WorkIQ conversation.
 
 ## Ownership
 
 The application owns:
 
-- model and prompt selection;
-- the subset of tools exposed to the model;
-- retries, approvals, checkpoints, and final synthesis;
+- which tools are available and when they are invoked;
+- the outer model and prompt, when an outer model is used;
+- retries, approvals, checkpoints, and result handling;
 - orchestration across WorkIQ and other providers.
 
-WorkIQ owns operation validation, Microsoft 365 access, and tenant policy enforcement.
+WorkIQ owns operation validation, Microsoft 365 access, and tenant policy enforcement. For `ask`,
+WorkIQ also owns Microsoft 365 grounding and synthesis inside that tool call.
 
 ## State
 
-MCP does not define an agent conversation. The outer agent owns its transcript and checkpoints.
-WorkIQ `ask` can separately return a `conversationId`; persist it only when intentional WorkIQ-side
-continuation is required.
+MCP does not define the host's agent conversation. If the host uses an outer agent, that agent owns
+its transcript and checkpoints. WorkIQ `ask` separately returns a `conversationId`; persist it only
+when intentional WorkIQ-side continuation is required.
 
 This repository starts `@microsoft/workiq mcp` over stdio. Its default policy exposes `ask`,
 `call_function`, `fetch`, `get_schema`, `list_agents`, and `search_paths`; `--allow-writes` keeps
@@ -74,9 +81,10 @@ application approval step before exposing them to the model.
 
 ## Choose MCP for
 
+- a natural-language Microsoft 365 question invoked as `ask` by an LLM-based client;
 - raw entities, schema discovery, or caller-controlled writes;
 - an application model that combines WorkIQ with other tools;
-- application-owned checkpoints, retries, approvals, and synthesis;
+- application-owned checkpoints, retries, approvals, or cross-provider synthesis;
 - model-level telemetry or reasoning summaries from the outer model.
 
 [Build the MCP + Deep Agents example](../mcp-deepagents.md)

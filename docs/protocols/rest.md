@@ -33,6 +33,11 @@ attributions, adaptive cards, and sensitivity metadata.
 
 Do not assume per-turn controls become conversation defaults.
 
+REST chat and MCP `ask` can both accept complex natural-language questions and return synthesized
+answers. Choose REST when an application or backend wants a direct HTTP conversation contract;
+choose MCP when an LLM-based client should invoke WorkIQ through a tool contract. Complexity is not
+the differentiator.
+
 ## Boundaries
 
 REST Chat does not expose:
@@ -43,8 +48,8 @@ REST Chat does not expose:
 - task identity, cancellation, or task recovery;
 - code interpreter or graphic-art tools.
 
-Use A2A for delegated work with a lifecycle. Use MCP for precise reads, writes, or caller-owned
-orchestration.
+Use A2A for delegated work with a lifecycle. Use MCP for tool-based invocation, including `ask`,
+precise reads, writes, or caller-owned cross-provider orchestration.
 
 ## Authentication
 
@@ -66,7 +71,7 @@ the authorized tenant and user.
 
 ## Choose REST for
 
-- direct application or CLI chat;
+- direct application or backend chat;
 - synthesized Microsoft 365 Copilot answers;
 - minimal orchestration and infrastructure;
 - references, attributions, and sensitivity metadata;
