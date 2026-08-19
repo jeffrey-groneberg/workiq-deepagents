@@ -8,7 +8,7 @@ layer through MCP, A2A, or REST.
 ## Executive architecture view
 
 <figure class="workiq-diagram workiq-diagram--raster">
-  <img src="../assets/images/graph-vs-workiq.png" width="2560" height="2528" alt="A natural-language workplace ask branches into two paths. Direct Graph retrieves raw cross-workload payloads and serializes selected records and metadata into a high and variable caller-model token load. WorkIQ ask, A2A, or REST keeps retrieval and ranking context inside WorkIQ and returns synthesized output with a lower caller-model token load. Both paths produce a grounded result.">
+  <img src="../assets/images/graph-vs-workiq.png" width="2560" height="2572" alt="A natural-language workplace ask branches into two paths. Orange callouts identify token sources. Direct Graph adds planning tokens from prompts, tool schemas, and call arguments; payload tokens when raw JSON and content enter the model; loop tokens when history and prior results are resent; and repeated calls and results from paging or retries. WorkIQ receives request tokens, keeps retrieval calls, payloads, and reasoning inside the service, then returns compact result tokens. Both paths produce a grounded result.">
 </figure>
 
 **Executive takeaway:** WorkIQ reduces the custom build and operating surface for grounded workplace
@@ -30,6 +30,18 @@ cross-workload retrieval, and synthesis to the application. WorkIQ can own those
   WorkIQ's internal processing. Careful `$select`, filtering, ranking, truncation, and caching can
   reduce Graph input tokens. MCP entity tools return raw data and have the same Graph-like token
   profile when their results are inserted into an outer model context.
+
+  The orange callouts separate the token-producing stages:
+
+  1. **Planning tokens:** the outer model receives its prompt, tool schemas, and call arguments.
+  2. **Payload tokens:** each Graph response contributes raw JSON, content, and metadata when the
+    application inserts it into model context.
+  3. **Loop tokens:** later reasoning turns can resend conversation history and prior tool results.
+  4. **Multipliers:** paging, retries, and additional source calls can repeat arguments and results.
+
+  On the WorkIQ lane, request and compact-result tokens cross the caller boundary. Retrieval calls,
+  source payloads, ranking, and reasoning are still processed, but remain inside WorkIQ rather than
+  being assembled in the caller's outer model context.
 
 ## Where direct Graph adds work
 
