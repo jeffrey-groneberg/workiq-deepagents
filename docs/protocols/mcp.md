@@ -78,3 +78,5 @@ application approval step before exposing them to the model.
 - an application model that combines WorkIQ with other tools;
 - application-owned checkpoints, retries, approvals, and synthesis;
 - model-level telemetry or reasoning summaries from the outer model.
+
+[Build the MCP + Deep Agents example](../mcp-deepagents.md)

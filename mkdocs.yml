@@ -79,6 +79,7 @@ nav:
       - MCP - Own the loop: protocols/mcp.md
       - A2A - Delegate a task: protocols/a2a.md
       - REST - Delegate a turn: protocols/rest.md
+  - MCP + Deep Agents: mcp-deepagents.md
   - Authentication: authentication.md
   - WorkIQ vs Microsoft Graph: graph-vs-workiq.md
   - Source: https://github.com/jeffrey-groneberg/workiq-deepagents
