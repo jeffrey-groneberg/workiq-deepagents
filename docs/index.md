@@ -3,7 +3,7 @@
 # Three protocols. Three control boundaries.
 
 WorkIQ exposes **MCP**, **A2A**, and **REST**. They reach similar Microsoft 365 context, but
-they move orchestration, state, streaming, and recovery to different owners.
+they assign orchestration, state, and recovery to different owners.
 
 [Choose a protocol](#choose-by-ownership){ .md-button .md-button--primary }
 [Control model](foundations.md){ .md-button }
@@ -15,7 +15,7 @@ they move orchestration, state, streaming, and recovery to different owners.
 
 </section>
 
-<div class="fold-board" role="img" aria-label="MCP keeps orchestration in the application, A2A delegates a durable task to WorkIQ, and REST delegates one conversational turn to WorkIQ.">
+<div class="fold-board" role="img" aria-label="MCP keeps orchestration in the application, A2A delegates a task to WorkIQ, and REST delegates one conversational turn to WorkIQ.">
   <div class="fold-track fold-track--header" aria-hidden="true">
     <span></span><span>Intent</span><span>Control</span><span>State</span><span>Output</span><span>Recovery</span>
   </div>
@@ -26,7 +26,7 @@ they move orchestration, state, streaming, and recovery to different owners.
     <strong>A2A</strong><span>Outcome</span><span>WorkIQ agent</span><span>Task + context</span><span>Artifacts</span><span>Get / subscribe</span>
   </div>
   <div class="fold-track fold-track--rest">
-    <strong>REST</strong><span>Chat turn</span><span>WorkIQ</span><span>Conversation</span><span>Snapshots</span><span>Continue turn</span>
+    <strong>REST</strong><span>Chat turn</span><span>WorkIQ</span><span>Conversation</span><span>Response</span><span>Continue turn</span>
   </div>
 </div>
 
@@ -45,7 +45,7 @@ they move orchestration, state, streaming, and recovery to different owners.
   </a>
   <a class="protocol-row protocol-row--rest" href="protocols/rest/">
     <span class="protocol-code">REST</span>
-    <span><strong>You submit a turn.</strong> Embed a synthesized Microsoft 365 Copilot conversation with streamed snapshots.</span>
+    <span><strong>You submit a turn.</strong> Embed a synthesized Microsoft 365 Copilot conversation.</span>
     <span class="protocol-action">Inspect REST</span>
   </a>
 </div>
@@ -55,21 +55,10 @@ they move orchestration, state, streaming, and recovery to different owners.
 | If the requirement starts with... | Start with | Contract you gain |
 | --- | --- | --- |
 | "Read this entity, inspect its schema, or perform an approved action" | **MCP** | Composable tools and caller-owned orchestration |
-| "Research this outcome, let me cancel it, and reconnect later" | **A2A** | Durable task identity, status, and artifacts |
+| "Research this outcome, track it, and let me cancel it" | **A2A** | Task identity, status, and artifacts |
 | "Answer this Microsoft 365 question in my app" | **REST** | The smallest synthesized chat contract |
 
 !!! warning "Reasoning boundary"
     None of the three WorkIQ contracts promises private chain-of-thought. The CLI can show the
     supported reasoning summary from its **outer Azure model** in MCP mode; WorkIQ itself exposes
     public tool results, task events, artifacts, or conversation responses.
-
-## Read evidence by strength
-
-<div class="evidence-strip">
-  <div><span class="evidence-mark evidence-mark--documented">D</span><strong>Documented</strong><br>Explicit in Microsoft Learn or a protocol specification.</div>
-  <div><span class="evidence-mark evidence-mark--observed">R</span><strong>Repository</strong><br>Visible in this project's current source code.</div>
-  <div><span class="evidence-mark evidence-mark--inference">I</span><strong>Inference</strong><br>A consequence of the contract, not a product guarantee.</div>
-</div>
-
-The complete guide keeps these categories separate and links every material product claim to its
-source. It was last verified on **2026-08-19**.

@@ -80,8 +80,7 @@ nav:
       - A2A - Delegate a task: protocols/a2a.md
       - REST - Delegate a turn: protocols/rest.md
   - Authentication: authentication.md
-  - Decide & build: decision-guide.md
-  - Evidence: evidence.md
+  - WorkIQ vs Microsoft Graph: graph-vs-workiq.md
   - Source: https://github.com/jeffrey-groneberg/workiq-deepagents
 
 extra:
