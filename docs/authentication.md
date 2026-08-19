@@ -16,14 +16,9 @@ tenant, path, method, and workload policy still decide what that call may do.
 
 ## Effective access
 
-```mermaid
-flowchart LR
-    G[Delegated grant] --> X[Effective access]
-    U[User M365 ACLs] --> X
-    T[Tenant policy] --> X
-    W[Workload controls] --> X
-    X --> R[Permission-trimmed result]
-```
+<figure class="workiq-diagram workiq-diagram--raster">
+    <img src="../assets/images/effective-access.png" width="2582" height="1016" alt="Delegated grant, user Microsoft 365 ACLs, tenant policy, and workload controls converge on effective access, which produces a permission-trimmed result.">
+</figure>
 
 A delegated grant cannot elevate the user beyond their Microsoft 365 access. Licensing,
 sensitivity labels, information barriers, and workload policy still apply.

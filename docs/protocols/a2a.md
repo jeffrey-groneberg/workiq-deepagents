@@ -21,14 +21,9 @@ Agent Card  https://workiq.svc.cloud.microsoft/a2a/.well-known/agent-card.json
 WorkIQ supports A2A v1.0 and v0.3. Send `A2A-Version`; omission selects v0.3. Read the deployed
 Agent Card rather than hard-coding agent capabilities.
 
-```mermaid
-flowchart LR
-    M[Message] --> T[Task]
-    C[contextId] -. groups .-> M
-    C -. groups .-> T
-    T --> S[Status]
-    T --> A[Artifacts]
-```
+<figure class="workiq-diagram workiq-diagram--raster">
+  <img src="../../assets/images/a2a-contract.png" width="2542" height="1292" alt="A message leads to a task. A context ID groups both the message and task with dashed links. The task exposes status and artifacts.">
+</figure>
 
 | Object | Meaning |
 | --- | --- |

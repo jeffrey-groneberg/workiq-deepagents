@@ -482,6 +482,15 @@ body {
   margin: 0 auto;
 }
 
+.workiq-diagram--raster img {
+  display: block;
+  width: 100%;
+  min-width: 40rem;
+  max-width: none;
+  height: auto;
+  margin: 0 auto;
+}
+
 .executive-diagram .workiq-diagram svg {
   width: 100%;
   min-width: 40rem;

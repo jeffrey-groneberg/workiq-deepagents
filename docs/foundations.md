@@ -50,13 +50,9 @@ WorkIQ API.
 
 === "REST"
 
-    ```mermaid
-    sequenceDiagram
-        participant C as Client
-        participant W as WorkIQ REST
-        C->>W: Conversation turn
-        W-->>C: Grounded response
-    ```
+    <figure class="workiq-diagram workiq-diagram--raster">
+    <img src="../assets/images/rest-control-plane.png" width="2482" height="1324" alt="The client sends a conversation turn to WorkIQ REST with a solid arrow. WorkIQ REST returns a grounded response to the client with a dashed arrow.">
+    </figure>
 
     WorkIQ owns the turn. The client owns conversation persistence and presentation.
 
