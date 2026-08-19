@@ -1,0 +1,93 @@
+site_name: WorkIQ Protocol Field Guide
+site_description: Architecture guidance for choosing WorkIQ MCP, A2A, and REST
+site_url: https://jeffrey-groneberg.github.io/workiq-deepagents/
+
+theme:
+  name: material
+  language: en
+  icon:
+    logo: material/vector-polyline
+  font:
+    text: Familjen Grotesk
+    code: Red Hat Mono
+  features:
+    - content.code.copy
+    - content.tabs.link
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme)"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: workiq-diagram-source
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+extra_javascript:
+  - assets/javascripts/diagrams.mjs
+
+nav:
+  - Overview: index.md
+  - Foundations: foundations.md
+  - Protocols:
+      - MCP - Own the loop: protocols/mcp.md
+      - A2A - Delegate a task: protocols/a2a.md
+      - REST - Delegate a turn: protocols/rest.md
+  - Authentication: authentication.md
+  - Decide & build: decision-guide.md
+  - Evidence: evidence.md
+  - Source: https://github.com/jeffrey-groneberg/workiq-deepagents
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jeffrey-groneberg/workiq-deepagents
+      name: WorkIQ Deep Agent on GitHub
+
+strict: true

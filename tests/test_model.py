@@ -15,6 +15,7 @@ def test_model_uses_streaming_responses_api() -> None:
     assert model.streaming is True
     assert model.use_responses_api is True
     assert model.output_version == "responses/v1"
+    assert model.reasoning == {"summary": "auto"}
 
 
 def test_model_requires_base_url(monkeypatch: pytest.MonkeyPatch) -> None:

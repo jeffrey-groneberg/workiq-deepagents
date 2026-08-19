@@ -30,6 +30,7 @@ class EventRenderer:
         self.console = console
         self.text_rendered = False
         self._answer_line_open = False
+        self._reasoning_line_open = False
         self._model_step = 0
         self._model_started: dict[str, tuple[int, float]] = {}
         self._tool_started: dict[str, tuple[str, float]] = {}
@@ -59,6 +60,7 @@ class EventRenderer:
     def close(self) -> None:
         """Restore the terminal after streaming finishes or fails."""
         self._clear_status()
+        self._finish_reasoning_line()
         self._finish_answer_line()
 
     def _render_model_chunk(self, event: StreamEvent) -> None:
@@ -66,11 +68,22 @@ class EventRenderer:
         if not isinstance(chunk, AIMessageChunk):
             return
 
+        reasoning_parts: list[str] = []
+        for block in chunk.content_blocks:
+            if block.get("type") != "reasoning":
+                continue
+            reasoning = block.get("reasoning")
+            if isinstance(reasoning, str):
+                reasoning_parts.append(reasoning)
+        if reasoning_parts:
+            self._render_reasoning("".join(reasoning_parts))
+
         text = str(chunk.text)
         if not text:
             return
 
         self._clear_status()
+        self._finish_reasoning_line()
         if not self._answer_line_open:
             self.console.print("[bold green]assistant>[/bold green] ", end="")
             self._answer_line_open = True
@@ -79,13 +92,30 @@ class EventRenderer:
 
     def _finish_model(self, run_id: str) -> None:
         self._clear_status()
+        self._finish_reasoning_line()
         self._finish_answer_line()
         step, started = self._model_started.pop(run_id, (self._model_step, monotonic()))
         elapsed = monotonic() - started
         self.console.print(f"[dim]Model step {step} completed in {elapsed:.1f}s[/dim]")
 
+    def _render_reasoning(self, reasoning: str) -> None:
+        self._clear_status()
+        self._finish_answer_line()
+        if not self._reasoning_line_open:
+            self.console.print("[dim]thought> [/dim]", end="")
+            self._reasoning_line_open = True
+        self.console.print(
+            reasoning,
+            end="",
+            style="dim",
+            markup=False,
+            highlight=False,
+            soft_wrap=True,
+        )
+
     def _start_tool(self, run_id: str, name: str) -> None:
         self._clear_status()
+        self._finish_reasoning_line()
         self._finish_answer_line()
         self._tool_started[run_id] = (name, monotonic())
         self.console.print(f"[cyan]Tool {name} started[/cyan]")
@@ -114,6 +144,11 @@ class EventRenderer:
         if self._answer_line_open:
             self.console.print()
             self._answer_line_open = False
+
+    def _finish_reasoning_line(self) -> None:
+        if self._reasoning_line_open:
+            self.console.print()
+            self._reasoning_line_open = False
 
 
 async def stream_agent(

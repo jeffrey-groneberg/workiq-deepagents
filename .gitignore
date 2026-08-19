@@ -40,6 +40,7 @@ junit.xml
 # Packaging output
 build/
 dist/
+site/
 *.egg-info/
 .eggs/
 wheels/
@@ -61,6 +62,11 @@ yarn-error.log*
 *.swp
 *.swo
 *~
+
+# Local Impeccable design artifacts
+.impeccable/
+DESIGN.md
+PRODUCT.md
 
 # Local tool and cloud credentials
 .direnv/

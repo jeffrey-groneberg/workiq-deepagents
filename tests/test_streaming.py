@@ -48,6 +48,30 @@ def test_renderer_shows_progress_without_tool_payloads() -> None:
             "on_chat_model_stream",
             run_id="model-1",
             name="ChatOpenAI",
+            data={
+                "chunk": AIMessageChunk(
+                    content=[
+                        {
+                            "type": "reasoning",
+                            "id": "rs_test",
+                            "summary": [
+                                {
+                                    "type": "summary_text",
+                                    "text": "Checking relevant records.",
+                                }
+                            ],
+                        }
+                    ],
+                    response_metadata={"model_provider": "openai"},
+                )
+            },
+        )
+    )
+    renderer.handle(
+        make_event(
+            "on_chat_model_stream",
+            run_id="model-1",
+            name="ChatOpenAI",
             data={"chunk": AIMessageChunk(content="Checking")},
         )
     )
@@ -78,7 +102,9 @@ def test_renderer_shows_progress_without_tool_payloads() -> None:
     renderer.close()
 
     rendered = output.getvalue()
+    assert "thought> Checking relevant records." in rendered
     assert "assistant> Checking" in rendered
+    assert rendered.index("thought>") < rendered.index("assistant>")
     assert "Model step 1 completed" in rendered
     assert "Tool fetch started" in rendered
     assert "Tool fetch completed" in rendered

@@ -4,6 +4,9 @@ A Python CLI that connects [LangChain Deep Agents](https://github.com/langchain-
 to Microsoft WorkIQ. It uses an Azure-hosted model to answer questions from the signed-in
 user's Microsoft 365 context and reports streamed activity, token usage, and estimated cost.
 
+The [WorkIQ Protocol Field Guide](https://jeffrey-groneberg.github.io/workiq-deepagents/)
+compares MCP, A2A, and REST across orchestration, streaming, state, authentication, and recovery.
+
 ## Work IQ
 
 Work IQ is Microsoft's CLI and MCP server for grounding agents in Microsoft 365 data such
@@ -65,8 +68,9 @@ With an activated standard environment, use `workiq-agent` directly or
 `python -m workiq_deepagent`. Run `workiq-agent --help` for all options.
 
 WorkIQ tools are read-only by default; `--allow-writes` exposes mutating tools and requires
-agent confirmation before use. Tool arguments/results and private model reasoning are not
-printed because they may contain workplace data.
+agent confirmation before use. The CLI prints model-generated reasoning summaries when
+available, but tool arguments/results and private model reasoning are not printed because
+they may contain workplace data.
 
 ## Development
 
@@ -75,5 +79,8 @@ uv run pytest
 uv run ruff check .
 uv run ruff format --check .
 uv run pyright
+uv run --group docs mkdocs build --strict
 betterleaks git . --pre-commit --staged --redact
 ```
+
+Preview the documentation locally with `uv run --group docs mkdocs serve`.

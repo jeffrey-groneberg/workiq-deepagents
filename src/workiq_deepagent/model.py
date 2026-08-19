@@ -23,6 +23,7 @@ def create_model(settings: Settings) -> ChatOpenAI:
         model=settings.model,
         base_url=settings.model_base_url,
         api_key=token_provider,
+        reasoning={"summary": "auto"},
         streaming=True,
         use_responses_api=True,
         output_version="responses/v1",

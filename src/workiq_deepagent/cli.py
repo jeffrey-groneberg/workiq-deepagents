@@ -4,7 +4,7 @@ import asyncio
 import shutil
 import sys
 from collections.abc import Coroutine
-from typing import Annotated, Any, TypeVar
+from typing import Annotated, Any, TypeVar, cast
 from uuid import uuid4
 
 import typer
@@ -102,8 +102,8 @@ async def _chat(settings: Settings, *, allow_writes: bool) -> None:
     async with open_agent(settings, allow_writes=allow_writes) as (agent, tools):
         console.print(
             f"Connected to WorkIQ with [bold]{len(tools)}[/bold] tools. "
-            "Type [bold]/quit[/bold] to exit. Live model and tool events are shown; "
-            "private chain-of-thought is not exposed."
+            "Type [bold]/quit[/bold] to exit. Live model, reasoning summary, and tool "
+            "events are shown; private chain-of-thought is not exposed."
         )
         while True:
             try:
@@ -139,6 +139,15 @@ async def _list_tools(settings: Settings, *, allow_writes: bool) -> None:
         console.print(table)
 
 
+def _unwrap_exception(exc: Exception) -> Exception:
+    while isinstance(exc, ExceptionGroup):
+        group = cast(ExceptionGroup[Exception], exc)
+        if len(group.exceptions) != 1:
+            break
+        exc = group.exceptions[0]
+    return cast(Exception, exc)
+
+
 def _run(coroutine: Coroutine[Any, Any, ResultT]) -> ResultT:
     try:
         return asyncio.run(coroutine)
@@ -146,6 +155,7 @@ def _run(coroutine: Coroutine[Any, Any, ResultT]) -> ResultT:
         error_console.print(f"[red]Missing executable:[/red] {exc.filename or 'npx'}")
         raise typer.Exit(1) from exc
     except Exception as exc:
+        exc = _unwrap_exception(exc)
         error_console.print(f"[red]Error:[/red] {exc}")
         raise typer.Exit(1) from exc
 
