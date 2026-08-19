@@ -7,37 +7,9 @@ layer through MCP, A2A, or REST.
 
 ## Executive architecture view
 
-<div class="executive-diagram" markdown>
-
-```mermaid
-flowchart TB
-  ASK["Natural-language workplace ask"]
-
-  subgraph GRAPH["DIRECT GRAPH · BUILD + OPERATE"]
-    direction TB
-    G1["1 · Plan the ask<br/>intent · endpoints · query syntax"]
-    G1 --> G2["2 · Retrieve<br/>mail · meetings · Teams · files"]
-    G2 --> G3["3 · Build the answer<br/>normalize · rank · model · citations"]
-    G3 --> G4["4 · Run in production<br/>scopes · paging · retries · sync · state"]
-  end
-
-  subgraph WORKIQ["WORKIQ · MANAGED INTELLIGENCE"]
-    direction TB
-    W1["1 · Choose the boundary<br/>MCP · A2A · REST"]
-    W1 --> W2["2 · WorkIQ assembles context<br/>permission-trimmed retrieval · grounding · policy"]
-    W2 --> W3["3 · Keep only required control<br/>agent loop · task lifecycle · chat UI"]
-  end
-
-  ASK --> G1
-  ASK --> W1
-  G4 --> OUT["Grounded result"]
-  W3 --> OUT
-
-  class G1,G2,G3,G4 graphRoute
-  class W1,W2,W3 workiqRoute
-```
-
-</div>
+<figure class="workiq-diagram workiq-diagram--raster">
+  <img src="../assets/images/graph-vs-workiq.png" width="2560" height="2412" alt="A natural-language workplace ask branches into two paths. Direct Graph requires planning, retrieval, answer construction, and production operation. WorkIQ requires choosing MCP, A2A, or REST, then assembles context while the application keeps required control. Both paths produce a grounded result.">
+</figure>
 
 **Executive takeaway:** WorkIQ reduces the custom build and operating surface for grounded workplace
 answers. Direct Graph maximizes control, but the application funds and owns the answer pipeline.

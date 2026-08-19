@@ -20,31 +20,17 @@ WorkIQ API.
 
 === "MCP"
 
-    ```mermaid
-    sequenceDiagram
-        participant C as Application
-        participant G as Caller model
-        participant W as WorkIQ MCP
-        C->>G: Prompt + approved tools
-        G-->>C: Tool call
-        C->>W: tools/call
-        W-->>C: Tool result
-        C->>G: Continue loop
-    ```
+    <figure class="workiq-diagram workiq-diagram--raster">
+    <img src="../assets/images/mcp-control-plane.png" width="2482" height="1740" alt="The application sends a prompt and approved tools to the caller model. The model returns a tool call. The application calls WorkIQ MCP, receives a tool result, and continues the model loop.">
+    </figure>
 
     The application owns planning, policy, retries, and final synthesis.
 
 === "A2A"
 
-    ```mermaid
-    sequenceDiagram
-        participant C as Caller
-        participant W as WorkIQ agent
-        C->>W: Outcome-oriented message
-        W-->>C: Task + context
-        C->>W: Get or cancel task
-        W-->>C: Status + artifacts
-    ```
+    <figure class="workiq-diagram workiq-diagram--raster">
+    <img src="../assets/images/a2a-control-plane.png" width="2472" height="1680" alt="The caller sends an outcome-oriented message to the WorkIQ agent and receives a task and context. The caller can get or cancel the task and receives status and artifacts.">
+    </figure>
 
     WorkIQ owns execution; the caller owns the public task lifecycle.
 

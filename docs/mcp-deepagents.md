@@ -4,24 +4,9 @@ This is the smallest useful version of the integration implemented by this repos
 WorkIQ as a local MCP server, adapt its discovered tools for LangChain, apply policy, and give the
 approved tools to a Deep Agent.
 
-<div class="executive-diagram" markdown>
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant D as Deep Agent
-    participant A as MCP adapter
-    participant W as WorkIQ child
-    participant M as Microsoft 365
-    U->>D: Workplace question
-    D->>A: Approved tool call
-    A->>W: MCP over stdio
-    W->>M: Permission-trimmed operation
-    M-->>W: Resource result
-    W-->>A: MCP tool result
-    A-->>D: LangChain ToolMessage
-    D-->>U: Synthesized answer
-```
-</div>
+<figure class="workiq-diagram workiq-diagram--raster">
+    <img src="../assets/images/mcp-deepagents.png" width="2730" height="2188" alt="The user asks a workplace question. A Deep Agent sends an approved call through the MCP adapter and WorkIQ child to Microsoft 365. Permission-trimmed results return through the same boundaries, and the Deep Agent synthesizes the answer for the user.">
+</figure>
 
 The Python process never receives the WorkIQ bearer token. The `@microsoft/workiq` child owns its
 interactive sign-in and communicates with Python through MCP messages over stdio.
