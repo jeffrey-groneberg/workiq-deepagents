@@ -112,16 +112,36 @@ execution, or independent control over storage and models.
 
 The labels compare production integration surface, not elapsed developer time.
 
+!!! info "WorkIQ API price examples"
+  This section prices calls made by a custom application, agent, or harness. Those WorkIQ API
+  calls use Copilot Credits even when the represented user has Microsoft 365 E7. Native WorkIQ
+  use inside Microsoft 365 Copilot is included in E7 and has no incremental WorkIQ charge.
+
+  The published pay-as-you-go price is **$0.01 per Copilot Credit**. The WorkIQ Tools API uses
+  **0.1 credit per explicit API call ($0.001)**. WorkIQ Chat and Context consumption, including
+  MCP `ask`, REST, and A2A, is variable. Microsoft does not publish a fixed per-query credit rate,
+  so the examples below use planning bands rather than a rate-card guarantee:
+
+  | Planning band | Credits per query | Cost per query | Cost per 1,000 queries |
+  | --- | ---: | ---: | ---: |
+  | Light | 20-40 | **$0.20-$0.40** | **$200-$400** |
+  | Medium | 30-75 | **$0.30-$0.75** | **$300-$750** |
+  | Heavy | 50-150 | **$0.50-$1.50** | **$500-$1,500** |
+
+  Actual credits depend on models, runtime, retrieved context, reasoning, and tools. These figures
+  exclude the caller's own model, hosting, telemetry services, and any separately invoked WorkIQ
+  Tool API calls.
+
 <div class="comparison-table comparison-table--wide" markdown>
 
-| Ask | Direct Graph implementation | WorkIQ route | Relative effort |
-| --- | --- | --- | --- |
-| "What meetings do I have today?" | Query `calendarView`, handle time zones, recurrence, fields, and paging. | Call MCP `ask`, submit one REST turn, or send an A2A message with required location metadata. | **Low / low.** Prefer Graph for structured events; WorkIQ for a prose answer. |
-| "Brief me for my Contoso call." | Search mail, Teams, files, and events with separate scopes and requests; fetch details; merge, rank, and summarize. | Submit the ask through MCP `ask`, REST chat, or A2A according to the caller contract. | **High / low-medium.** |
-| "Find everything related to Project Atlas, including items that never use that name." | Search mail, Teams, and events with source-specific queries; use Copilot Retrieval for eligible SharePoint, OneDrive, or connector content; then classify and synthesize across outputs. | Submit the cross-workload topic ask through MCP `ask`, REST, or A2A and verify the grounded evidence. | **High / low-medium.** |
-| "Summarize project risks and correlate them with incident telemetry." | Build Microsoft 365 retrieval, an external telemetry integration, and a model/tool loop. | Give an outer agent WorkIQ MCP and telemetry tools. | **High / medium.** |
-| "Investigate the regression; let me cancel and reconnect later." | Add retrieval and synthesis plus a job queue, state store, status API, cancellation, and artifact persistence. | Send an A2A task; persist `task.id` and `contextId`; get, subscribe, or cancel while retained. | **Very high / medium.** |
-| "Create this exact approved calendar event." | Call the calendar endpoint with a narrow schema and explicit authorization. | Use an approval-gated MCP `create_entity` call. | **Low / medium.** Graph is usually the cleaner contract. |
+| Ask | Direct Graph implementation | WorkIQ route | WorkIQ planning cost | Relative effort |
+| --- | --- | --- | ---: | --- |
+| "What meetings do I have today?" | Query `calendarView`, handle time zones, recurrence, fields, and paging. | Call MCP `ask`, submit one REST turn, or send an A2A message with required location metadata. | **Light: $0.20-$0.40 per query.** | **Low / low.** Prefer Graph for structured events; WorkIQ for a prose answer. |
+| "Brief me for my Contoso call." | Search mail, Teams, files, and events with separate scopes and requests; fetch details; merge, rank, and summarize. | Submit the ask through MCP `ask`, REST chat, or A2A according to the caller contract. | **Medium: $0.30-$0.75 per query.** | **High / low-medium.** |
+| "Find everything related to Project Atlas, including items that never use that name." | Search mail, Teams, and events with source-specific queries; use Copilot Retrieval for eligible SharePoint, OneDrive, or connector content; then classify and synthesize across outputs. | Submit the cross-workload topic ask through MCP `ask`, REST, or A2A and verify the grounded evidence. | **Medium-heavy: $0.30-$1.50 per query.** | **High / low-medium.** |
+| "Summarize project risks and correlate them with incident telemetry." | Build Microsoft 365 retrieval, an external telemetry integration, and a model/tool loop. | Give an outer agent WorkIQ MCP and telemetry tools. | **Medium-heavy: $0.30-$1.50 for the WorkIQ query; external telemetry and model costs are additional.** | **High / medium.** |
+| "Investigate the regression; let me cancel and reconnect later." | Add retrieval and synthesis plus a job queue, state store, status API, cancellation, and artifact persistence. | Send an A2A task; persist `task.id` and `contextId`; get, subscribe, or cancel while retained. | **Heavy baseline: $0.50-$1.50+; long-running or multi-turn work can cost more.** | **Very high / medium.** |
+| "Create this exact approved calendar event." | Call the calendar endpoint with a narrow schema and explicit authorization. | Use an approval-gated MCP `create_entity` call. | **Tool API: $0.001 per explicit call; approval and outer-model costs are additional.** | **Low / medium.** Graph is usually the cleaner contract. |
 
 </div>
 
@@ -150,6 +170,9 @@ synthesis.
 ## Microsoft Learn references
 
 - [Work IQ API overview](https://learn.microsoft.com/microsoft-365/copilot/extensibility/work-iq/api-overview)
+- [Work IQ API general availability and pricing](https://www.microsoft.com/en-us/licensing/news/work-iq-general-availability)
+- [Microsoft Copilot Credits Guide](https://go.microsoft.com/fwlink/?linkid=2368800)
+- [Copilot Credits usage-based billing](https://learn.microsoft.com/microsoft-365/copilot/usage-based-billing-overview-copilot-credits)
 - [Work IQ overview - Context](https://learn.microsoft.com/microsoft-365/copilot/extensibility/work-iq/#context)
 - [Work IQ MCP overview](https://learn.microsoft.com/microsoft-365/copilot/extensibility/work-iq/mcp/overview)
 - [Work IQ A2A overview](https://learn.microsoft.com/microsoft-365/copilot/extensibility/work-iq/a2a/overview)
